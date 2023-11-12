@@ -1,24 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
+import Encuestas from './components/Encuestas.jsx';
+import Navegacion from './components/Navbar.jsx';
+import { HashRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HashRouter>
+        <Navegacion />
+        <Routes>
+          <Route path="/" element={<>No es parte del CU</>} />
+          <Route path="/encuestas" element={<Encuestas />} />
+          <Route path="/home" element={<>No es parte del CU</>} />
+          <Route path="/llamadas" element={<>No es parte del CU</>} />
+          {/* <Route path = "*" element = {<Navigate to= "/" replace />} /> */}
+        </Routes>
+      </HashRouter>
   );
 }
 
