@@ -1,5 +1,5 @@
 import './App.css';
-import Encuestas from './components/Encuestas.jsx';
+import Encuestas from './components/PantallaEncuesta.jsx';
 import Navegacion from './components/Navbar.jsx';
 import { HashRouter, Route, Routes } from "react-router-dom";
 

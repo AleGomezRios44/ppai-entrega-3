@@ -81,14 +81,12 @@ const Encuestas = () => {
     }
   }
 
-  const handleFechaInicioChange = (date) => {
+  const tomarFechaInicioPeriodo = (date) => {
     setFechaInicio(date);
-    console.log(fechaInicio)
   };
 
-  const handleFechaFinChange = (date) => {
+  const tomarFechaFinPeriodo = (date) => {
     setFechaFin(date);
-    console.log(fechaFin)
   };
 
   //Esta función se utiliza para crear una lista de listas para facilitar la paginación
@@ -106,7 +104,6 @@ const Encuestas = () => {
       actualIndx += groupSize;
     }
 
-    console.log(resultado);
     return resultado;
   };
 
@@ -150,10 +147,10 @@ const Encuestas = () => {
         <Col xs={3}>
           <div style={{ backgroundColor: "lightblue" }} className="d-flex flex-column justify-content-between">
             <div style={{ margin: "10px" }}>
-              <Datepicker mensaje={"Seleccionar Fecha Inicio:"} cambioFecha={handleFechaInicioChange} />
+              <Datepicker mensaje={"Seleccionar Fecha Inicio:"} cambioFecha={tomarFechaInicioPeriodo} />
             </div>
             <div style={{ margin: "10px" }}>
-              <Datepicker mensaje={"Seleccionar Fecha Fin:"} cambioFecha={handleFechaFinChange} />
+              <Datepicker mensaje={"Seleccionar Fecha Fin:"} cambioFecha={tomarFechaFinPeriodo} />
             </div>
             <div
               className="d-flex justify-content-center my-2"
