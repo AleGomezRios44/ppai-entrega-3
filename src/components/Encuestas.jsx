@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import ListaLlamada from "./ListaLlamadas";
 import { useState, useEffect } from "react";
 import TablaEncuesta from "./TablaEncuesta";
+import Swal from "sweetalert2";
 
 const listaMock = [
   {
@@ -53,11 +54,42 @@ const encuestaMock = {
 const Encuestas = () => {
   const [lista, setLista] = useState(null);
   const [encuesta, setEncuesta] = useState(null);
+  const [fechaInicio, setFechaInicio] = useState(null);
+  const [fechaFin, setFechaFin] = useState(null);
 
   useEffect(() => {
     setLista(dividirArreglo(listaMock));
     setEncuesta(encuestaMock);
   }, []);
+
+  const handleBuscar = () => {
+    if(fechaInicio && fechaFin){
+      if(fechaInicio < fechaFin && fechaFin <= new Date()){
+        Swal.fire({
+          text: "El periodo seleccionado es válido",
+          icon: "success",
+          confirmButtonText: "Aceptar",
+        });
+      }
+      else{
+        Swal.fire({
+          text: "El periodo seleccionado no es válido",
+          icon: "warning",
+          confirmButtonText: "Aceptar",
+        });
+      }
+    }
+  }
+
+  const handleFechaInicioChange = (date) => {
+    setFechaInicio(date);
+    console.log(fechaInicio)
+  };
+
+  const handleFechaFinChange = (date) => {
+    setFechaFin(date);
+    console.log(fechaFin)
+  };
 
   //Esta función se utiliza para crear una lista de listas para facilitar la paginación
   const dividirArreglo = (array) => {
@@ -78,21 +110,55 @@ const Encuestas = () => {
     return resultado;
   };
 
+  const handleImprimir = () => {
+    if(encuesta){
+      Swal.fire({
+        text: "Archivo enviado a cola de impresión",
+        icon: "success",
+        confirmButtonText: "Aceptar",
+      });
+    }
+    else{
+      Swal.fire({
+        text: "Debe haber una encuesta consultada para poder imprimir",
+        icon: "warning",
+        confirmButtonText: "Aceptar",
+      });
+    }
+  }
+
+  const handleCSV = () => {
+    if(encuesta){
+      Swal.fire({
+        text: "MODAL",
+        icon: "success",
+        confirmButtonText: "Aceptar",
+      });
+    }
+    else{
+      Swal.fire({
+        text: "Debe haber una encuesta consultada para poder generar un CSV",
+        icon: "warning",
+        confirmButtonText: "Aceptar",
+      });
+    }
+  }
+
   return (
     <div className="container">
       <Row className="justify-content-center align-items-center min-vh-10 g-2">
         <Col xs={3}>
           <div style={{ backgroundColor: "lightblue" }} className="d-flex flex-column justify-content-between">
             <div style={{ margin: "10px" }}>
-              <Datepicker mensaje={"Seleccionar Fecha Inicio:"} />
+              <Datepicker mensaje={"Seleccionar Fecha Inicio:"} cambioFecha={handleFechaInicioChange} />
             </div>
             <div style={{ margin: "10px" }}>
-              <Datepicker mensaje={"Seleccionar Fecha Fin:"} />
+              <Datepicker mensaje={"Seleccionar Fecha Fin:"} cambioFecha={handleFechaFinChange} />
             </div>
             <div
               className="d-flex justify-content-center my-2"
             >
-              <Button variant="primary" className="me-2">
+              <Button onClick={() => handleBuscar()} variant="primary" className="me-2">
                 Buscar
               </Button>
             </div>
@@ -119,10 +185,10 @@ const Encuestas = () => {
             <Row>
               <TablaEncuesta encuesta={encuesta} />
               <div className="d-flex justify-content-center my-2">
-                <Button variant="light" className="me-2">
+                <Button onClick={() => handleCSV()} variant="light" className="me-2">
                   Generar CSV
                 </Button>
-                <Button variant="light" className="me-2">
+                <Button onClick={() => handleImprimir()} variant="light" className="me-2">
                   Imprimir
                 </Button>
               </div>

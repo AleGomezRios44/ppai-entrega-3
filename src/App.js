@@ -8,11 +8,10 @@ function App() {
     <HashRouter>
         <Navegacion />
         <Routes>
-          <Route path="/" element={<>No es parte del CU</>} />
+          <Route path="/" element={<div className='text-center'><h1>No es parte del CU</h1></div>}/>
           <Route path="/encuestas" element={<Encuestas />} />
-          <Route path="/home" element={<>No es parte del CU</>} />
-          <Route path="/llamadas" element={<>No es parte del CU</>} />
-          {/* <Route path = "*" element = {<Navigate to= "/" replace />} /> */}
+          <Route path="/home" element={<div className='text-center'><h1>No es parte del CU</h1></div>} />
+          <Route path="/llamadas" element={<div className='text-center'><h1>No es parte del CU</h1></div>} />
         </Routes>
       </HashRouter>
   );
