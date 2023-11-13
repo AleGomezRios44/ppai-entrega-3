@@ -46,7 +46,16 @@ const Encuestas = () => {
           });
         }
         else{
-          setLista(dividirArreglo(llamadas))
+          if(llamadas === "ERROR"){
+            Swal.fire({
+            text: "Ha habido un error, recargue la página he intente nuevamente",
+            icon: "error",
+            confirmButtonText: "Aceptar",
+          });
+          }
+          else{
+            setLista(dividirArreglo(llamadas))
+          }
         }
         
       }
