@@ -24,18 +24,25 @@ function ListaLlamada({ lista }) {
   };
 
   const handleNext = () => {
-    if (itemPaginado < lista.length - 1) {
-      setItemPaginado(itemPaginado + 1);
-      setLimitePag([itemPaginado -1, itemPaginado + 2])
-    }
+    setItemPaginado((prevItemPaginado) => {
+      if (prevItemPaginado < lista.length - 1) {
+        setLimitePag([prevItemPaginado + 1, prevItemPaginado + 3]);
+        return prevItemPaginado + 1;
+      }
+      return prevItemPaginado;
+    });
   };
-
+  
   const handlePrev = () => {
-    if (itemPaginado > 0) {
-      setItemPaginado(itemPaginado - 1);
-      setLimitePag([itemPaginado -1, itemPaginado + 1])
-    }  
+    setItemPaginado((prevItemPaginado) => {
+      if (prevItemPaginado > 0) {
+        setLimitePag([prevItemPaginado - 1, prevItemPaginado + 1]);
+        return prevItemPaginado - 1;
+      }
+      return prevItemPaginado;
+    });
   };
+  
 
   return (
     <div className="d-flex justify-content-center my-2 flex-column">
@@ -46,7 +53,7 @@ function ListaLlamada({ lista }) {
               <th>Seleccion</th>
               <th>Llamada</th>
               <th>Cliente</th>
-              <th>Encuesta Enviada</th>
+              <th>Operador</th>
               <th>Estado Actual</th>
               <th>Duración</th>
             </tr>
@@ -74,9 +81,9 @@ function ListaLlamada({ lista }) {
                           />
                         </td>
                         <td>{llamada.id}</td>
-                        <td>{llamada.cliente}</td>
-                        <td>{llamada.tieneEncuesta ? "Sí" : "No"}</td>
-                        <td>{llamada.estado}</td>
+                        <td>{llamada.cliente.nombreCompleto}</td>
+                        <td>{llamada.descripcionOperador}</td>
+                        <td>{llamada.nombreClienteYEstado[1]}</td>
                         <td>
                           {llamada.duracion > 1
                             ? llamada.duracion.toString() + " minutos"
@@ -99,7 +106,7 @@ function ListaLlamada({ lista }) {
             <Pagination.Ellipsis onClick={() => handlePaginacion(1)}/>
             {paginas.map((pag) => (
             (pag >= limitePag[0] && pag <= limitePag[1]) &&
-            <Pagination.Item onClick={() => handlePaginacion(pag)} active={itemPaginado === pag -1}>
+            <Pagination.Item active={itemPaginado === pag -1} onClick={() => handlePaginacion(pag)}>
               {pag}
             </Pagination.Item>
           ))}

@@ -7,36 +7,7 @@ import { useState, useEffect } from "react";
 import TablaEncuesta from "./TablaEncuesta";
 import Swal from "sweetalert2";
 
-const listaMock = [
-  {
-    id: 1,
-    cliente: "Juan Carlos",
-    tieneEncuesta: true,
-    estado: "finalizada",
-    duracion: 0.5,
-  },
-  {
-    id: 2,
-    cliente: "Pepe Argento",
-    tieneEncuesta: true,
-    estado: "finalizada",
-    duracion: 1,
-  },
-  {
-    id: 3,
-    cliente: "Sheldon Cooper",
-    tieneEncuesta: true,
-    estado: "finalizada",
-    duracion: 10,
-  },
-  {
-    id: 4,
-    cliente: "Pedro Picapiedra",
-    tieneEncuesta: false,
-    estado: "en curso",
-    duracion: 12,
-  },
-];
+import PantallaEncuesta from "../services/PantallaEncuestas.js"
 
 const encuestaMock = {
   descripcion: "Encuesta 1",
@@ -58,18 +29,26 @@ const Encuestas = () => {
   const [fechaFin, setFechaFin] = useState(null);
 
   useEffect(() => {
-    setLista(dividirArreglo(listaMock));
     setEncuesta(encuestaMock);
   }, []);
 
-  const handleBuscar = () => {
+  const handleBuscar = async () => {
     if(fechaInicio && fechaFin){
       if(fechaInicio < fechaFin && fechaFin <= new Date()){
-        Swal.fire({
-          text: "El periodo seleccionado es válido",
-          icon: "success",
-          confirmButtonText: "Aceptar",
-        });
+        const fechaInicioFormateada = obtenerFechaFormateada(fechaInicio)
+        const fechaFinFormateada = obtenerFechaFormateada(fechaFin)
+        const llamadas = await PantallaEncuesta.pedirFechasFiltroPeriodo(fechaInicioFormateada, fechaFinFormateada)
+        if(Array.isArray(llamadas) && llamadas.length === 0){
+          Swal.fire({
+            text: "No se encontraron resultados",
+            icon: "warning",
+            confirmButtonText: "Aceptar",
+          });
+        }
+        else{
+          setLista(dividirArreglo(llamadas))
+        }
+        
       }
       else{
         Swal.fire({
@@ -80,6 +59,13 @@ const Encuestas = () => {
       }
     }
   }
+
+  //formato de fecha para hacer la peticion http
+  const obtenerFechaFormateada = (fecha) => {
+    const opciones = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+    return fechaFormateada.replace(/\//g, '-');
+  };
 
   const tomarFechaInicioPeriodo = (date) => {
     setFechaInicio(date);
