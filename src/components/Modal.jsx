@@ -4,6 +4,7 @@ import { Table } from "react-bootstrap";
 import TablaEncuesta from "./TablaEncuesta";
 import Row from "react-bootstrap/Row";
 
+// Modal pantalla de CSV, recibe la llamada, la encuesta y la funcion de cerrar 
 function ModalCSV({ llamada, encuesta, cerrar }) {
   return (
     <div
@@ -11,16 +12,24 @@ function ModalCSV({ llamada, encuesta, cerrar }) {
       style={{
         display: "block",
         position: "absolute",
-        zIndex: 1000, // Ajusta este valor según sea necesario
+        zIndex: 1000,
       }}
     >
-      <Modal.Dialog style={{ width: '80%', height: '80%', margin: 'auto', top: '50%', transform: 'translateY(-50%)' }}>
+      <Modal.Dialog
+        style={{
+          width: "80%",
+          height: "80%",
+          margin: "auto",
+          top: "50%",
+          transform: "translateY(-50%)",
+        }}
+      >
         <Modal.Header closeButton onClick={() => cerrar()}>
           <Modal.Title>CSV</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body style={{ height: 'calc(100% - 115px)' }}>
-          <div className="d-flex flex-column" style={{ height: '100%' }}>
+        <Modal.Body style={{ height: "calc(100% - 115px)" }}>
+          <div className="d-flex flex-column" style={{ height: "100%" }}>
             <Row className="justify-content-center align-items-center min-vh-10 g-2">
               <Table responsive>
                 <thead>
@@ -37,7 +46,8 @@ function ModalCSV({ llamada, encuesta, cerrar }) {
                     <td>{llamada.cliente.nombreCompleto}</td>
                     <td>{llamada.nombreClienteYEstado[1]}</td>
                     <td>
-                      {Math.round(llamada.duracion / 60).toString() + " minutos"}
+                      {Math.round(llamada.duracion / 60).toString() +
+                        " minutos"}
                     </td>
                   </tr>
                 </tbody>

@@ -4,6 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
 import logo from "../logo1.png";
 
+//Barra superior de navegacion
 function Navegacion() {
   return (
     <>

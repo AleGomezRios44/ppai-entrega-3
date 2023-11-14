@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 
 import PantallaEncuesta from "../services/PantallaEncuestas.js";
 
+//Visualizacion de la pantalla, con todos los componentes del frontend
 const Encuestas = () => {
   const [lista, setLista] = useState(null);
   const [encuesta, setEncuesta] = useState(null);
@@ -18,16 +19,19 @@ const Encuestas = () => {
   const [showModal, setShowModal] = useState(false);
   const [tomarLlamada, setTomarLlamada] = useState(null);
 
+  //Funcion que maneja la muestra del CSV en pantalla
   const handleMostrarModal = () => {
     setShowModal(true);
   };
 
+  //Funcion final del CU que cierra el CSV
   const finCU = () => {
     setShowModal(false);
   };
 
   useEffect(() => {}, []);
 
+  //Funcion que manda las fechas y recibe las llamadas filtradas que tienen encuesta y las setea en la lista de llamadas
   const handleBuscar = async () => {
     if (fechaInicio && fechaFin) {
       if (fechaInicio < fechaFin && fechaFin <= new Date()) {
@@ -47,7 +51,7 @@ const Encuestas = () => {
           });
         } else {
           if (llamadas === "ERROR") {
-            setLista(null)
+            setLista(null);
             Swal.fire({
               text: "Ha habido un error con el servidor, recargue la página he intente nuevamente",
               icon: "error",
@@ -67,25 +71,27 @@ const Encuestas = () => {
     }
   };
 
-  //formato de fecha para hacer la peticion http
+  //Formato de fecha para hacer la peticion http
   const obtenerFechaFormateada = (fecha) => {
     const opciones = { day: "2-digit", month: "2-digit", year: "numeric" };
     const fechaFormateada = fecha.toLocaleDateString("es-ES", opciones);
     return fechaFormateada.replace(/\//g, "-");
   };
 
+  //Funcion enviada al DatePicker para que setee el parametro fecha de inicio a enviar
   const tomarFechaInicioPeriodo = (date) => {
     setFechaInicio(date);
   };
 
+  //Funcion enviada al DatePicker para que setee el parametro fecha de fin a enviar
   const tomarFechaFinPeriodo = (date) => {
     setFechaFin(date);
   };
 
-  //Esta función se utiliza para crear una lista de listas para facilitar la paginación
+  //Esta función se utiliza para crear una lista de listas para facilitar la paginación en la lista de llamadas
   const dividirArreglo = (array) => {
     const resultado = [];
-    const groupSize = 3;
+    const groupSize = 3; //Cantidad de llamadas por página
     let actualIndx = 0;
 
     if (array.length < groupSize) {
@@ -100,6 +106,7 @@ const Encuestas = () => {
     return resultado;
   };
 
+  //Funcion que muestra la notificación de la cola de impresión
   const handleImprimir = () => {
     if (encuesta) {
       Swal.fire({
@@ -110,22 +117,6 @@ const Encuestas = () => {
     } else {
       Swal.fire({
         text: "Debe haber una encuesta consultada para poder imprimir",
-        icon: "warning",
-        confirmButtonText: "Aceptar",
-      });
-    }
-  };
-
-  const handleCSV = () => {
-    if (encuesta) {
-      Swal.fire({
-        text: "MODAL",
-        icon: "success",
-        confirmButtonText: "Aceptar",
-      });
-    } else {
-      Swal.fire({
-        text: "Debe haber una encuesta consultada para poder generar un CSV",
         icon: "warning",
         confirmButtonText: "Aceptar",
       });
