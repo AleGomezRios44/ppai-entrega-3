@@ -24,21 +24,21 @@ function TablaEncuesta({
           </tr>
           </tbody>
         ): <tbody>
-        <tr key={encuesta.pregunta1} active>
-            <td>{encuesta.descripcion}</td>
-            <td>{encuesta.pregunta1}</td>
-            <td>{encuesta.respuesta1}</td>
+        <tr key={encuesta[0]} active>
+            <td>{encuesta[0]}</td>
+            <td>{encuesta[1]}</td>
+            <td>{encuesta[2]}</td>
           </tr>
-          <tr key={encuesta.pregunta2} active>
+          <tr active>
             <td></td>
-            <td>{encuesta.pregunta2}</td>
-            <td>{encuesta.respuesta2}</td>
+            <td>{encuesta[3]}</td>
+            <td>{encuesta[4]}</td>
           </tr>
-          {encuesta.pregunta3 ?  
-          (<tr key={encuesta.pregunta3} active>
+          {encuesta[5] ?  
+          (<tr key={encuesta[5]} active>
             <td></td>
-            <td>{encuesta.pregunta3}</td>
-            <td>{encuesta.respuesta3}</td>
+            <td>{encuesta[5]}</td>
+            <td>{encuesta[6]}</td>
           </tr>): <></>}
           </tbody>
         }

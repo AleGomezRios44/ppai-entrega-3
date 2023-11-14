@@ -16,8 +16,20 @@ const pedirFechasFiltroPeriodo = async (fechaInicio, fechaFin) => {
       }
 }
 
+const pedirSeleccionLlamada = async (id) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/api/ivr/encuestas/${id}`)
+    
+    return response.data;
+
+  } catch (error) {
+    return "ERROR";
+  }
+}
+
 const PantallaEncuestas = {
     pedirFechasFiltroPeriodo,
+    pedirSeleccionLlamada
 }
 
 export default PantallaEncuestas

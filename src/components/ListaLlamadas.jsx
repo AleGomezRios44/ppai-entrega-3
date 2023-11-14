@@ -2,8 +2,10 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import { useEffect, useState } from "react";
 import { Pagination } from "react-bootstrap";
+import PantallaEncuestas from "../services/PantallaEncuestas";
+import Swal from "sweetalert2";
 
-function ListaLlamada({ lista }) {
+function ListaLlamada({ lista, tomarEncuesta, tomarLlamada }) {
   const [itemPaginado, setItemPaginado] = useState(0);
   const [limitePag, setLimitePag] = useState([1, 3]);
   
@@ -43,6 +45,21 @@ function ListaLlamada({ lista }) {
     });
   };
   
+  const tomarSeleccionLlamada = async (llamada) => {
+    const encuesta = await PantallaEncuestas.pedirSeleccionLlamada(llamada.id)
+    if(encuesta === "ERROR"){
+      tomarEncuesta(null)
+      Swal.fire({
+        text: "Ha habido un error con el servidor, recargue la página he intente nuevamente",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      })
+    }
+    else{
+      tomarEncuesta(encuesta)
+    }
+    tomarLlamada(llamada)
+  } 
 
   return (
     <div className="d-flex justify-content-center my-2 flex-column">
@@ -70,10 +87,11 @@ function ListaLlamada({ lista }) {
                 ))
               : lista[itemPaginado].map(
                   (llamada) =>
-                    llamada.id && (
+                    (llamada.id ) && (
                       <tr key={llamada.id} active>
                         <td>
                           <Form.Check
+                            onClick={() => tomarSeleccionLlamada(llamada)}
                             reverse
                             name="group1"
                             type={"radio"}
@@ -85,11 +103,7 @@ function ListaLlamada({ lista }) {
                         <td>{llamada.descripcionOperador}</td>
                         <td>{llamada.nombreClienteYEstado[1]}</td>
                         <td>
-                          {llamada.duracion > 1
-                            ? llamada.duracion.toString() + " minutos"
-                            : llamada.duracion === 1
-                            ? llamada.duracion.toString() + " minuto"
-                            : (llamada.duracion * 60).toString() + " segundos"}
+                          {Math.round(llamada.duracion/60).toString() + " minutos"}
                         </td>
                       </tr>
                     )
